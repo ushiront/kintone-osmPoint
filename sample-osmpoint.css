@@ -1,0 +1,18 @@
+@charset "UTF-8";
+.map {
+    height: 400px;
+    width: 100%;
+}
+
+.spinner-map {
+    background-color: #0e0e0e;
+}
+
+.pinText {
+    text-decoration: none;
+    color: #ff0000;
+    font-size: 14pt;
+    font-weight: bold;
+    background-color: rgba(140,140,140,0.6);
+/*    text-shadow: black 0.1em 0.1em 0.2em;*/
+}
