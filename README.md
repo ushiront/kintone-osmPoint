@@ -13,18 +13,16 @@ The link to this kintone settings page is: https:// &lt;subdomainname&gt;.&lt;do
 
 The following libraries are needed.
 
-[Cybozu CDN](https://cybozudev.zendesk.com/hc/ja/articles/202960194 "Cybozu CDN")
-JavaScript( for PC and Mobile Devices )
- - jquery.min.js
- - moment.min.js
- - moment-with-locales.min.js
- - ol.js
- - spin.min.js
+[Cybozu CDN](https://cybozudev.zendesk.com/hc/ja/articles/202960194) JavaScript( for PC and Mobile Devices )
+ - jquery.min.js (version:2.2.4)
+ - moment.min.js (version:2.15.1)
+ - moment-with-locales.min.js (version:2.15.1)
+ - ol.js (version:3.18.2)
+ - spin.min.js (version:2.3.2)
  - sample-osmpoint.js * This repository file
 
-[Cybozu CDN](https://cybozudev.zendesk.com/hc/ja/articles/202960194 "Cybozu CDN")
-CSS( for PC only)
- - ol.css
+[Cybozu CDN](https://cybozudev.zendesk.com/hc/ja/articles/202960194) CSS( for PC only)
+ - ol.css (version:3.18.2)
  - sample-osmpoint.css * This repository file
  
 # Notes
