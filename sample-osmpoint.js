@@ -5,8 +5,9 @@ jQuery.noConflict();
 (function($) {
     "use strict";
 
-    // Set appId. Mobile API is direct application ID
-    var appId = kintone.app.getId() ? kintone.app.getId() : 16;
+    // Set appId. Mobile API is browser application ID
+    var appId = kintone.app.getId() ? kintone.app.getId() :
+    Number(location.pathname.replace(/\/k\/m\//, "").split("/")[0]);
     var osmPosition = {
         // London city
         defLat: 51.507351,
@@ -35,6 +36,17 @@ jQuery.noConflict();
         }
     };
 
+    var onloadBlob = function(xhr) {
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                // Create URL from blob
+                var blob = xhr.response;
+                var urlFile = window.URL || window.webkitURL;
+                loadHeaderFiles(urlFile.createObjectURL(blob), "css");
+            }
+        };
+    };
+
     var loadRegistCSS = function() {
         var url = kintone.api.url('/k/v1/app/customize', true) + '?app=' + appId;
         kintone.api(url, 'GET', {}, function(resp) {
@@ -51,17 +63,10 @@ jQuery.noConflict();
                         xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
                         // IE,FF
                         xhr.responseType = "blob";
-
-                        xhr.onload = function() {
-                            if (xhr.status === 200) {
-                                // Create URL from blob
-                                var blob = xhr.response;
-                                var urlFile = window.URL || window.webkitURL;
-                                console.log(urlFile.createObjectURL(blob));
-                                loadHeaderFiles(urlFile.createObjectURL(blob), "css");
-                            }
-                        };
                         xhr.send();
+
+                        // load blob
+                        onloadBlob(xhr);
                 }
             }
         }, function(error) {
@@ -207,16 +212,20 @@ jQuery.noConflict();
                 // Get address by Re-Geocording
                 kintone.proxy(url, 'GET', {}, {}).then(function(args) {
                     var resp = JSON.parse(args[0]);
-                    var state = resp["address"]["state"] ? resp["address"]["state"] : "";
-                    var city = resp["address"]["city"] ? resp["address"]["city"] : "";
-                    var traffic_signals = resp["address"]["traffic_signals"] ? resp["address"]["traffic_signals"] : "";
-                    var country = resp["address"]["country"] ? resp["address"]["country"] : "";
-                    event.record["Address"]["value"] = state + city + traffic_signals + "(" + country + ")";
-                    console.log(args[1], JSON.parse(args[0]), args[2]);
+                    var respValue = {
+                        state: resp.address.state ? resp.address.state : "",
+                        city: resp.address.city ? resp.address.city : "",
+                        traffic_signals: resp.address.traffic_signals ? resp.address.traffic_signals : "",
+                        country: resp.address.country ? resp.address.country : ""
+                    };
+                    event.record["Address"]["value"] =
+                    respValue.state + respValue.city + respValue.traffic_signals + "(" + respValue.country + ")";
+
                     resolve(event);
                     spinner.spin();
                 }, function(error) {
                     console.log(error);
+
                     reject(event);
                     spinner.spin();
                 });
